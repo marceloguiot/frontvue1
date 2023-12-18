@@ -94,7 +94,20 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/eliminar',{
+      id: id
+    }
+    )
+    .then(function (response){
+      if(response.data == 'noresponse')
+      {
+        alert('Sus datos de acceso son incorrectos, favor de verificar.');
+      }
+      else
+      {
+        location.reload();
+      }
+    })
 }
 
 function closeModal1() {
