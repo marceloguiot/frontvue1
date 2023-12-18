@@ -54,7 +54,7 @@
       <TabPanel>
         <div class="w-4/6 mx-auto mt-10">
           <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Lista de usuarios</span>
-
+          <div v-for="usuario in usuarios">{{ usuario.nombre }}</div>
         </div>
         </TabPanel>
       <TabPanel>
@@ -107,7 +107,8 @@ const usuarios = ref([]);
 
 onBeforeMount(async function (){
   await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => {
-    r.json();
+    
+    usuarios.value = r.json();
   });
 
 
