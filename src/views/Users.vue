@@ -25,6 +25,8 @@ const actnombre = ref('');
 const actapellidos = ref('');
 const actemail = ref('');
 const actpass = ref('');
+const isOpen = ref(false);
+const isOpen1 = ref(false);
 
 const editar = (id) =>{
   usuarios_filtrar.value = usuarios.value;
@@ -82,7 +84,22 @@ const enviar = () =>{
   }
 }
 
-const isOpen = ref(false)
+
+
+
+const eliminar = (id) =>{
+
+isOpen1.value = true;
+actid.value = id;
+}
+
+const eliminar_def = (id) =>{
+  
+}
+
+function closeModal1() {
+  isOpen1.value = false
+}
 
 function closeModal() {
   isOpen.value = false
@@ -173,8 +190,9 @@ const salir = () => {
   <template #item-activo="activo">
     {{ activo.activo == "True" ? "Activo" : "Inactivo" }}
   </template>
-  <template #item-opciones="_id">
-  <div class="hover:cursor-pointer text-center" @click="editar(_id._id)">Editar</div>
+  <template #item-opciones="_id" class="flex flex-col">
+  <div class="hover:cursor-pointer text-center hover:text-sky-700" @click="editar(_id._id)">Editar</div>
+  <div class="mt-1 hover:cursor-pointer text-center hover:text-sky-700" @click="eliminar(_id._id)">Eliminar</div>
   </template>
   </EasyDataTable>
           </div>
@@ -295,6 +313,73 @@ const salir = () => {
       </div>
     </Dialog>
   </TransitionRoot>
+
+  <TransitionRoot appear :show="isOpen1" as="template">
+    <Dialog as="div" @close="closeModal1" class="relative z-10">
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black bg-opacity-25" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center"
+        >
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <DialogPanel
+              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+              <DialogTitle
+                as="h3"
+                class="text-lg font-medium leading-6 text-gray-900"
+              >
+                Confirmar eliminación
+              </DialogTitle>
+              <div class="mt-4 flex flex-col">
+                <p class="text-md font-semibold">
+                 Esta por eliminar al usuario con id: {{ actid }}
+                </p>
+                <span class="mt-6">¿Desea continuar?</span> 
+              </div>
+
+              <div class="mt-4 flex flex-row justify-around">
+                <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-teal-400 px-4 py-2 text-sm font-medium text-white hover:bg-teal-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  @click="eliminar_def(actid)"
+                >
+                  Continuar
+                </button>
+                <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  @click="closeModal1"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+
 </template>
 <style>
 .configurar_ev {
