@@ -54,7 +54,24 @@
       <TabPanel>
         <div class="w-4/6 mx-auto mt-10">
           <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Lista de usuarios</span>
-          <div v-for="usuario in usuarios">{{ usuario.nombre }}</div>
+          <div class="mt-3">
+            <EasyDataTable
+            buttons-pagination
+    :headers="headers"
+    :items="usuarios"
+    border-cell
+  >
+  <template #item-_id="_id">
+    {{ _id._id }}
+  </template>
+  <template #item-activo="activo">
+    {{ activo.activo == "True" ? "Activo" : "Inactivo" }}
+  </template>
+  <template #item-opciones="_id">
+  Editar
+  </template>
+  </EasyDataTable>
+          </div>
         </div>
         </TabPanel>
       <TabPanel>
@@ -94,7 +111,6 @@
 import { useRouter } from 'vue-router';
 import { ref, onBeforeMount } from 'vue';
 import axios from 'axios';
-
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 
 const nombre = ref('');
@@ -104,11 +120,19 @@ const password = ref('');
 const router = useRouter();
 const usuarios = ref([]);
 
+const headers = [
+  { text: "ID", value: "_id", width: 50 },
+  { text: "Nombre", value: "nombre"},
+  { text: "Apellidos", value: "apellidos"},
+  { text: "Email", value: "email"},
+  { text: "Activo", value: "activo"},
+  { text: "Opciones", value: "opciones"},
+];
+
 
 onBeforeMount(async function (){
-  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => {
-    
-    usuarios.value = r.json();
+  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => (r.json())).then((data) =>{
+    usuarios.value = data;
   });
 
 
