@@ -1,3 +1,103 @@
+<script setup>
+import { useRouter } from 'vue-router';
+import { ref, onBeforeMount } from 'vue';
+import axios from 'axios';
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/vue'
+
+const nombre = ref('');
+const apellidos = ref('');
+const email = ref('');
+const password = ref('');
+const router = useRouter();
+const usuarios = ref([]);
+const usuarios_filtrar = ref([]);
+
+
+const actid = ref('');
+const actnombre = ref('');
+const actapellidos = ref('');
+const actemail = ref('');
+const actpass = ref('');
+
+const editar = (id) =>{
+  usuarios_filtrar.value = usuarios.value;
+ const nfiltro = usuarios_filtrar.value.filter((elemento) => {
+    return elemento._id == id;
+  })
+  actnombre.value = nfiltro[0].nombre;
+  actapellidos.value = nfiltro[0].apellidos;
+  actemail.value = nfiltro[0].email;
+  isOpen.value = true;
+} 
+
+const headers = [
+  { text: "ID", value: "_id", width: 50 },
+  { text: "Nombre", value: "nombre"},
+  { text: "Apellidos", value: "apellidos"},
+  { text: "Email", value: "email"},
+  { text: "Activo", value: "activo"},
+  { text: "Opciones", value: "opciones"},
+];
+
+
+onBeforeMount(async function (){
+  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => (r.json())).then((data) =>{
+    usuarios.value = data;
+  });
+
+
+})
+
+const enviar = () =>{
+  if(password.value.trim() == '')
+  {
+    alert('La contraseña no puede ser de espacios en blanco.')
+  }
+  else
+  {
+    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/users/',{
+      email: email.value,
+      passwrd: password.value,
+      nombre: nombre.value,
+      apellidos: apellidos.value
+    }
+    )
+    .then(function (response){
+      if(response.data == 'noresponse')
+      {
+        alert('Sus datos de acceso son incorrectos, favor de verificar.');
+      }
+      else
+      {
+        router.push('/dashboard');
+      }
+    })
+  }
+}
+
+const isOpen = ref(false)
+
+function closeModal() {
+  isOpen.value = false
+}
+function openModal() {
+  isOpen.value = true
+}
+
+const mover = (lugar) =>{
+  router.push('/'+lugar)
+}
+const salir = () => {
+  router.push('/');
+}
+</script>
 <template>
   <div class="flex flex-col">
     <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
@@ -57,9 +157,15 @@
           <div class="mt-3">
             <EasyDataTable
             buttons-pagination
+            table-class-name="configurar_ev"
+            :rows-per-page="10"
     :headers="headers"
     :items="usuarios"
     border-cell
+    alternating
+            rowsPerPageMessage="Registros por página"
+		        rowsOfPageSeparatorMessage="de"
+            emptyMessage="No hay registros que mostrar"
   >
   <template #item-_id="_id">
     {{ _id._id }}
@@ -68,7 +174,7 @@
     {{ activo.activo == "True" ? "Activo" : "Inactivo" }}
   </template>
   <template #item-opciones="_id">
-  <span class="hover:cursor-pointer text-center" @click="editar(_id._id)">Editar</span>
+  <div class="hover:cursor-pointer text-center" @click="editar(_id._id)">Editar</div>
   </template>
   </EasyDataTable>
           </div>
@@ -146,17 +252,22 @@
                 <p class="flex flex-col">
                 <div class="mt-5 flex flex-col">
                   <span>Nombre:</span>
-                  <input type="text" class="border border-slate-500 p-2 w-full">
+                  <input type="text" v-model="actnombre" class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Apellidos:</span>
-                  <input type="text" class="border border-slate-500 p-2 w-full">
+                  <input type="text" v-model="actapellidos" class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Email:</span>
-                  <input type="text" class="border border-slate-500 p-2 w-full">
+                  <input type="text" v-model="actemail" class="border border-slate-500 p-2 w-full">
+                </div>
+
+                <div class="mt-5 flex flex-col">
+                  <span>Nueva contraseña:</span>
+                  <input type="text" v-model="actpass" class="border border-slate-500 p-2 w-full">
                 </div>
 
                 </p>
@@ -185,89 +296,12 @@
     </Dialog>
   </TransitionRoot>
 </template>
-
-<script setup>
-import { useRouter } from 'vue-router';
-import { ref, onBeforeMount } from 'vue';
-import axios from 'axios';
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
-import {
-  TransitionRoot,
-  TransitionChild,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from '@headlessui/vue'
-
-const nombre = ref('');
-const apellidos = ref('');
-const email = ref('');
-const password = ref('');
-const router = useRouter();
-const usuarios = ref([]);
-
-const editar = (id) =>{
-  isOpen.value = true;
-} 
-
-const headers = [
-  { text: "ID", value: "_id", width: 50 },
-  { text: "Nombre", value: "nombre"},
-  { text: "Apellidos", value: "apellidos"},
-  { text: "Email", value: "email"},
-  { text: "Activo", value: "activo"},
-  { text: "Opciones", value: "opciones"},
-];
-
-
-onBeforeMount(async function (){
-  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => (r.json())).then((data) =>{
-    usuarios.value = data;
-  });
-
-
-})
-
-const enviar = () =>{
-  if(password.value.trim() == '')
-  {
-    alert('La contraseña no puede ser de espacios en blanco.')
-  }
-  else
-  {
-    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/users/',{
-      email: email.value,
-      passwrd: password.value,
-      nombre: nombre.value,
-      apellidos: apellidos.value
-    }
-    )
-    .then(function (response){
-      if(response.data == 'noresponse')
-      {
-        alert('Sus datos de acceso son incorrectos, favor de verificar.');
-      }
-      else
-      {
-        router.push('/dashboard');
-      }
-    })
-  }
+<style>
+.configurar_ev {
+  --easy-table-footer-font-size: 14px;
+  --easy-table-footer-padding: 0px 10px;
+  --easy-table-footer-height: 50px;
+  --easy-table-header-background-color: #544C4E;
+  --easy-table-header-font-color: white;
 }
-
-const isOpen = ref(false)
-
-function closeModal() {
-  isOpen.value = false
-}
-function openModal() {
-  isOpen.value = true
-}
-
-const mover = (lugar) =>{
-  router.push('/'+lugar)
-}
-const salir = () => {
-  router.push('/');
-}
-</script>
+</style>
