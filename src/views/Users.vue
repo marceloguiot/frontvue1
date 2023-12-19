@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import { ref, onBeforeMount } from 'vue';
 import axios from 'axios';
+import { Switch } from '@headlessui/vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import {
   TransitionRoot,
@@ -18,6 +19,7 @@ const password = ref('');
 const router = useRouter();
 const usuarios = ref([]);
 const usuarios_filtrar = ref([]);
+const enabled = ref(false)
 
 
 const actid = ref('');
@@ -305,6 +307,23 @@ const salir = () => {
                   <span>Nueva contraseña:</span>
                   <input type="text" minlength="6" maxlength="12" v-model="actpass" class="border border-slate-500 p-2 w-full">
                 </div>
+                <template>
+  <div class="py-16">
+    <Switch
+      v-model="enabled"
+      :class="enabled ? 'bg-teal-900' : 'bg-teal-700'"
+      class="relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+    >
+      <span class="sr-only">Use setting</span>
+      <span
+        aria-hidden="true"
+        :class="enabled ? 'translate-x-9' : 'translate-x-0'"
+        class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+      />
+    </Switch>
+  </div>
+</template>
+
                 </form>
                 </p>
               </div>
