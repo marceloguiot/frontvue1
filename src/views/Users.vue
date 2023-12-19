@@ -84,6 +84,10 @@ const enviar = () =>{
   }
 }
 
+const actualizar = () =>{
+  
+}
+
 
 
 
@@ -281,26 +285,27 @@ const salir = () => {
               </DialogTitle>
               <div class="mt-2">
                 <p class="flex flex-col">
+                  <form @submit.prevent="actualizar">
                 <div class="mt-5 flex flex-col">
                   <span>Nombre:</span>
-                  <input type="text" v-model="actnombre" class="border border-slate-500 p-2 w-full">
+                  <input type="text" maxlength="100" v-model="actnombre" class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Apellidos:</span>
-                  <input type="text" v-model="actapellidos" class="border border-slate-500 p-2 w-full">
+                  <input type="text" maxlength="100" v-model="actapellidos" class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Email:</span>
-                  <input type="text" v-model="actemail" class="border border-slate-500 p-2 w-full">
+                  <input type="text" maxlength="100" v-model="actemail" class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Nueva contraseña:</span>
-                  <input type="text" v-model="actpass" class="border border-slate-500 p-2 w-full">
+                  <input type="text" minlength="6" maxlength="12" v-model="actpass" class="border border-slate-500 p-2 w-full">
                 </div>
-
+                </form>
                 </p>
               </div>
 
