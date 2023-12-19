@@ -30,7 +30,7 @@ const isOpen1 = ref(false);
 
 const editar = (id) =>{
   usuarios_filtrar.value = usuarios.value;
- const nfiltro = usuarios_filtrar.value.filter((elemento) => {
+  const nfiltro = usuarios_filtrar.value.filter((elemento) => {
     return elemento._id == id;
   })
   actnombre.value = nfiltro[0].nombre;
@@ -183,7 +183,7 @@ const salir = () => {
       
     </div>
     </TabList>
- 
+
     <TabPanels>
       <TabPanel>
         <div class="w-4/6 mx-auto mt-10">
@@ -370,7 +370,7 @@ const salir = () => {
               </DialogTitle>
               <div class="mt-4 flex flex-col">
                 <p class="text-md font-semibold">
-                 Esta por eliminar al usuario con id: {{ actid }}
+                Esta por eliminar al usuario con id: {{ actid }}
                 </p>
                 <span class="mt-6">¿Desea continuar?</span> 
               </div>
