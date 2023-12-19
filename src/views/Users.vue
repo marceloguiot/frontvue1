@@ -94,7 +94,7 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/eliminar',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/eliminar/',{
       id: id
     }
     )
