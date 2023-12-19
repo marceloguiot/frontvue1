@@ -307,22 +307,22 @@ const salir = () => {
                   <span>Nueva contraseña:</span>
                   <input type="text" minlength="6" maxlength="12" v-model="actpass" class="border border-slate-500 p-2 w-full">
                 </div>
-                <template>
-  <div class="py-16">
+  <div class="py-5 flex flex-col">
+    <span class="mb-3">Activo:</span>
     <Switch
       v-model="enabled"
       :class="enabled ? 'bg-teal-900' : 'bg-teal-700'"
-      class="relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+      class="relative inline-flex h-[22px] w-[57px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
     >
       <span class="sr-only">Use setting</span>
       <span
         aria-hidden="true"
         :class="enabled ? 'translate-x-9' : 'translate-x-0'"
-        class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+        class="pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
       />
     </Switch>
   </div>
-</template>
+
 
                 </form>
                 </p>
