@@ -19,7 +19,7 @@ const password = ref('');
 const router = useRouter();
 const usuarios = ref([]);
 const usuarios_filtrar = ref([]);
-const enabled = ref(false)
+const enabled = ref(true)
 
 
 const actid = ref('');
@@ -35,10 +35,12 @@ const editar = (id) =>{
   const nfiltro = usuarios_filtrar.value.filter((elemento) => {
     return elemento._id == id;
   })
+  actid.value = id;
   actnombre.value = nfiltro[0].nombre;
   actapellidos.value = nfiltro[0].apellidos;
   actemail.value = nfiltro[0].email;
   isOpen.value = true;
+  enabled.value = nfiltro[0].activo;
 } 
 
 const headers = [
@@ -68,7 +70,7 @@ const enviar = () =>{
   {
     axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/users/',{
       email: email.value,
-      passwrd: password.value,
+      contrasena: password.value,
       nombre: nombre.value,
       apellidos: apellidos.value
     }
@@ -87,7 +89,18 @@ const enviar = () =>{
 }
 
 const actualizar = () =>{
-  
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/actualizar/',{
+      id: actid.value,
+      nombre: actnombre.value,
+      apellidos: actapellidos.value,
+      email: actemail.value,
+      contrasena: actpass.value,
+      activo: enabled.value
+    }
+    )
+    .then(function (response){
+      location.reload();
+    })
 }
 
 
@@ -285,22 +298,24 @@ const salir = () => {
               >
                 Editar usuario
               </DialogTitle>
+              <form @submit.prevent="actualizar">
               <div class="mt-2">
+                
                 <p class="flex flex-col">
-                  <form @submit.prevent="actualizar">
+                 
                 <div class="mt-5 flex flex-col">
                   <span>Nombre:</span>
-                  <input type="text" maxlength="100" v-model="actnombre" class="border border-slate-500 p-2 w-full">
+                  <input type="text" maxlength="100" v-model="actnombre" required class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Apellidos:</span>
-                  <input type="text" maxlength="100" v-model="actapellidos" class="border border-slate-500 p-2 w-full">
+                  <input type="text" maxlength="100" v-model="actapellidos" required class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
                   <span>Email:</span>
-                  <input type="text" maxlength="100" v-model="actemail" class="border border-slate-500 p-2 w-full">
+                  <input type="text" maxlength="100" v-model="actemail" required class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
@@ -311,7 +326,7 @@ const salir = () => {
     <span class="mb-3">Activo:</span>
     <Switch
       v-model="enabled"
-      :class="enabled ? 'bg-teal-900' : 'bg-teal-700'"
+      :class="enabled ? 'bg-teal-500' : 'bg-teal-900'"
       class="relative inline-flex h-[22px] w-[57px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
     >
       <span class="sr-only">Use setting</span>
@@ -324,18 +339,14 @@ const salir = () => {
   </div>
 
 
-                </form>
+               
                 </p>
               </div>
-
               <div class="mt-6 flex justify-around">
-                <button
-                  type="button"
-                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  @click="closeModal"
-                >
-                  Guardar
-                </button>
+                <input
+                  type="submit"
+                  value="Guardar"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"/>     
                 <button
                   type="button"
                   class="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
@@ -344,6 +355,8 @@ const salir = () => {
                   Cerrar
                 </button>
               </div>
+              </form>
+              
             </DialogPanel>
           </TransitionChild>
         </div>
