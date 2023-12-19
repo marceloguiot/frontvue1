@@ -220,7 +220,7 @@ const salir = () => {
     {{ _id._id }}
   </template>
   <template #item-activo="activo">
-    {{ activo.activo == "True" ? "Activo" : "Inactivo" }}
+    {{ activo.activo == true ? "Activo" : "Inactivo" }}
   </template>
   <template #item-opciones="_id" class="flex flex-col">
   <div class="hover:cursor-pointer text-center hover:text-sky-700" @click="editar(_id._id)">Editar</div>
