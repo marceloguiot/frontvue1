@@ -37,7 +37,7 @@ const enviar = () =>{
 <template>
   <div class="flex flex-col bg-slate-200 h-screen">
   <div class="flex flex-col bg-white max-w-[400px] min-w-[380px] h-auto rounded-lg p-5 shadow-lg m-auto">
-<span class="text-center text-2xl font-semibold text-slate-800"><img src="/logoauditanexo.jpeg"></span>
+<span class="text-center text-2xl font-semibold text-slate-800"><img src="/logoauditanexo.jpeg" width="60%"></span>
 <div class="flex flex-col">
   <form @submit.prevent="enviar">
   <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Iniciar sesión</span>
