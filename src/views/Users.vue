@@ -253,7 +253,7 @@ const salir = () => {
     <input type="text" minlength="6" maxlength="12" required v-model="password" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
   <div class="flex justify-center">
-  <input type="submit" class="mt-10 mb-10 w-[175px] h-11 rounded-md hover:bg-teal-400 p-2 bg-teal-300" value="Guardar"/>
+  <input type="submit" class="mt-10 text-white mb-10 w-[175px] h-11 rounded-md hover:bg-teal-600 p-2 bg-teal-500" value="Guardar"/>
   </div>
 </form>
       </TabPanel>
