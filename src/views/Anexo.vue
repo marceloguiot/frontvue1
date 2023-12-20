@@ -26,8 +26,10 @@
     </div>
   </div>
 </nav>
-<div class="flex flex-col">
-    <span class="text-2xl font-semibold mx-auto mt-20">Alertas</span>
+  <div class="flex flex-col">
+  <span class="text-2xl font-semibold mt-20">Subir Anexo30</span>
+  <input type="file" />
+  
   </div>
   </div>
 </template>
