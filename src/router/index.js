@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DashBoard from '../views/DashBoard.vue'
 import Users from '../views/Users.vue'
+import Anexo from '../views/Anexo.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,11 @@ const router = createRouter({
       path: '/users',
       name: 'users',
       component: Users
+    },
+    {
+      path: '/anexo30',
+      name: 'anexo30',
+      component: Anexo
     },
   ]
 })
