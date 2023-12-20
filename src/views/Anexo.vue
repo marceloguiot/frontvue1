@@ -30,7 +30,7 @@
     
   <span class="text-xl font-semibold mt-20">Subir Anexo30</span>
   <form @submit.prevent="enviar" class="flex flex-col w-4/6">
-  <input class="mt-10" id="nfile" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <input class="mt-10" id="nfile" type="file" ref="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
   <span class="text-sm mt-3">* Solo se aceptan archivos XLSX</span>
   <input type="submit" class="mt-7 text-white mb-10 hover:cursor-pointer w-[175px] h-8 rounded-md hover:bg-teal-600 p-1 bg-teal-500" value="Cargar"/>
   </form>
@@ -49,6 +49,7 @@ const router = useRouter();
 const enviar = () =>{
   const formData = new FormData();
         formData.append('file', document.getElementById('nfile').files[0]);
+        console.log(document.getElementById('nfile').files[0]);
         const headers = { 'Content-Type': 'multipart/form-data' };
         axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/anexo/', formData, { headers }).then((res) => {
           res.data.files; // binary representation of the file
