@@ -15,7 +15,7 @@
         Usuarios
       </span>
       <span @click="mover('anexo30')" class="hover:cursor-pointer block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-        Anexo30
+        Anexo 30
       </span>
       <span class="hover:cursor-pointer block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
         Procesos

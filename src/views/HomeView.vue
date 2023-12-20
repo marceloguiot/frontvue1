@@ -15,7 +15,7 @@ const enviar = () =>{
   }
   else
   {
-    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/login/',{
+    axios.post('http://localhost:8000/login/',{
       email: email.value,
       passwrd: password.value
     }
@@ -27,6 +27,7 @@ const enviar = () =>{
       }
       else
       {
+        sessionStorage.setItem("id", response.data);
         router.push('/dashboard');
       }
     })
