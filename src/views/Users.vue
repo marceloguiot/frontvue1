@@ -54,7 +54,7 @@ const headers = [
 
 
 onBeforeMount(async function (){
-  await fetch(`http://localhost:8000/list/`).then((r) => (r.json())).then((data) =>{
+  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => (r.json())).then((data) =>{
     usuarios.value = data;
   });
 
@@ -68,7 +68,7 @@ const enviar = () =>{
   }
   else
   {
-    axios.post('http://localhost:8000/users/',{
+    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/users/',{
       email: email.value,
       contrasena: password.value,
       nombre: nombre.value,
@@ -89,7 +89,7 @@ const enviar = () =>{
 }
 
 const actualizar = () =>{
-  axios.post('http://localhost:8000/actualizar/',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/actualizar/',{
       id: actid.value,
       nombre: actnombre.value,
       apellidos: actapellidos.value,
@@ -113,7 +113,7 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  axios.post('http://localhost:8000/eliminar/',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/eliminar/',{
       id: id
     }
     )

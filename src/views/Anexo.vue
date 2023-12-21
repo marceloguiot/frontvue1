@@ -14,7 +14,7 @@ const items = ref([]);
 const descripcion = ref('')
 
 onBeforeMount(async function (){
-  await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
+  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
 
@@ -44,10 +44,10 @@ const enviar = () =>{
         formData.append('id',id);
         console.log(document.getElementById('nfile').files[0]);
         const headers = { 'Content-Type': 'multipart/form-data' };
-        axios.post('http://localhost:8000/orders/anexo/', formData, { headers }).then(async (res) => {
+        axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/anexo/', formData, { headers }).then(async (res) => {
           res.data.files; // binary representation of the file
           res.status; // HTTP status
-          await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
+          await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
           cargando.value = false;
