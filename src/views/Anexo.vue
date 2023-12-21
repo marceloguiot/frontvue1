@@ -33,8 +33,12 @@ const enviar = () =>{
   cargando.value = true;
   const formData = new FormData();
   const id = sessionStorage.getItem("id");
-        formData.append('file', document.getElementById('nfile').files[0]);
-        formData.append('file1', document.getElementById('nfile1').files[0]);
+        console.log(document.getElementById('nfile').files.length);
+        for(let i = 0; i < document.getElementById('nfile').files.length; i++){
+          formData.append('file'+i, document.getElementById('nfile').files[i]);
+        }
+        formData.append('total_A', document.getElementById('nfile').files.length);
+        formData.append('fileb', document.getElementById('nfile1').files[0]);
         formData.append('desc',descripcion.value);
         formData.append('id',id);
         console.log(document.getElementById('nfile').files[0]);
@@ -99,8 +103,8 @@ const salir = () => {
     <label class="my-auto font-semibold  w-1/6">Inventario Inicial: </label>
     <div class="flex flex-col">
       <!-- <input class="mt-6" id="nfile" type="file" ref="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />-->
-      <input class="mt-6" id="nfile" type="file" ref="file" accept=".zip" />
-        <span class="text-sm mt-3">* Solo se aceptan archivos .ZIP</span>
+      <input class="mt-6" id="nfile" type="file" ref="file" multiple />
+        <span class="text-sm mt-3">* Puede seleccionar varios archivos</span>
     </div>
     
   </div>

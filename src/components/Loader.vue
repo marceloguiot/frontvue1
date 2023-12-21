@@ -7,13 +7,7 @@ const props = defineProps(['active'])
 const isLoading = ref(props.active);
 const fullPage = ref(true);
 
-const doAjax=() => {
-                isLoading.value = true;
-                // simulate AJAX
-                setTimeout(() => {
-                  isLoading = false
-                },5000)
-            }
+
 
 const onCancel= ()=> {
               console.log('User cancelled the loader.');
