@@ -33,11 +33,12 @@ const enviar = () =>{
   cargando.value = true;
   const formData = new FormData();
   const id = sessionStorage.getItem("id");
-        console.log(document.getElementById('nfile').files.length);
         for(let i = 0; i < document.getElementById('nfile').files.length; i++){
           formData.append('file'+i, document.getElementById('nfile').files[i]);
         }
         formData.append('total_A', document.getElementById('nfile').files.length);
+        formData.append('total_B', document.getElementById('nfile1').files.length);
+
         formData.append('fileb', document.getElementById('nfile1').files[0]);
         formData.append('desc',descripcion.value);
         formData.append('id',id);
@@ -138,13 +139,19 @@ const salir = () => {
   </template>
 
   <template #item-descargo="descargo, inventario">
- <span>{{ descargo.descargo }}</span>
+    <div class="flex flex-row justify-between">
+      <div class="flex flex-col">
+ <span v-for="item in descargo.descargo">{{ item }}</span>
+</div>
  <span class="ml-5">{{ descargo.inventario }}</span>
+</div>
   </template>
 
   <template #item-inventario="descargo">
+    <div class="flex flex-row justify-between">
  <span>{{ descargo.descargo !== '' ? 'Descargo cargado' : 'Descargo no cargado'}}</span>
  <span class="ml-5">{{ descargo.inventario !== '' ? 'Inventario cargado' : 'Inventario no cargado' }}</span>
+</div>
   </template>
 
 
