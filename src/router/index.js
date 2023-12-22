@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import DashBoard from '../views/DashBoard.vue'
 import Users from '../views/Users.vue'
 import Anexo from '../views/Anexo.vue'
+import Empresas from '../views/Empresas.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/anexo30',
       name: 'anexo30',
       component: Anexo
+    },
+    {
+      path: '/empresas',
+      name: 'empresas',
+      component: Empresas
     },
   ]
 })

@@ -13,9 +13,9 @@ import {
 } from '@headlessui/vue'
 
 const nombre = ref('');
-const apellidos = ref('');
-const email = ref('');
-const password = ref('');
+const rfc = ref('');
+const inmex = ref('');
+const direccion = ref('');
 const router = useRouter();
 const usuarios = ref([]);
 const usuarios_filtrar = ref([]);
@@ -23,10 +23,10 @@ const enabled = ref(true)
 
 
 const actid = ref('');
+const actrfc = ref('');
+const actinmex = ref('');
+const actdireccion = ref('');
 const actnombre = ref('');
-const actapellidos = ref('');
-const actemail = ref('');
-const actpass = ref('');
 const isOpen = ref(false);
 const isOpen1 = ref(false);
 
@@ -37,8 +37,8 @@ const editar = (id) =>{
   })
   actid.value = id;
   actnombre.value = nfiltro[0].nombre;
-  actapellidos.value = nfiltro[0].apellidos;
-  actemail.value = nfiltro[0].email;
+  actrfc.value = nfiltro[0].apellidos;
+  actinmex.value = nfiltro[0].email;
   isOpen.value = true;
   enabled.value = nfiltro[0].activo;
 } 
@@ -46,9 +46,9 @@ const editar = (id) =>{
 const headers = [
   { text: "ID", value: "_id", width: 50 },
   { text: "Nombre", value: "nombre"},
-  { text: "Apellidos", value: "apellidos"},
-  { text: "Email", value: "email"},
-  { text: "Activo", value: "activo"},
+  { text: "RFC", value: "apellidos"},
+  { text: "Inmex", value: "email"},
+  { text: "Dirección", value: "activo"},
   { text: "Opciones", value: "opciones"},
 ];
 
@@ -62,23 +62,23 @@ onBeforeMount(async function (){
 })
 
 const enviar = () =>{
-  if(password.value.trim() == '')
+  if(rfc.value.trim() == '')
   {
-    alert('La contraseña no puede ser de espacios en blanco.')
+    alert('El RFC no puede ser de espacios en blanco.')
   }
   else
   {
     axios.post('http://localhost:8000/users/',{
-      email: email.value,
-      contrasena: password.value,
+      inmex: inmex.value,
+      direccion: direccion.value,
       nombre: nombre.value,
-      apellidos: apellidos.value
+      rfc: rfc.value
     }
     )
     .then(function (response){
       if(response.data == 'noresponse')
       {
-        alert('Sus datos de acceso son incorrectos, favor de verificar.');
+        alert('Su empresa, no se pudo registrar intente nuevamente.');
       }
       else
       {
@@ -92,9 +92,9 @@ const actualizar = () =>{
   axios.post('http://localhost:8000/actualizar/',{
       id: actid.value,
       nombre: actnombre.value,
-      apellidos: actapellidos.value,
-      email: actemail.value,
-      contrasena: actpass.value,
+      apellidos: actrfc.value,
+      email: actinmex.value,
+      contrasena: actdireccion.value,
       activo: enabled.value
     }
     )
@@ -185,14 +185,14 @@ const salir = () => {
         <button
           :class="{ 'bg-blue-500 rounded-sm text-white mr-2 p-2': selected, 'bg-white text-black mr-2 p-2': !selected }"
         >
-          Listar usuarios
+          Listar empresas
         </button>
       </Tab>
       <Tab as="template" v-slot="{ selected }">
         <button
           :class="{ 'bg-blue-500 rounded-sm text-white mr-2 p-2': selected, 'bg-white text-black mr-2 p-2': !selected }"
         >
-          Registrar usuarios
+          Registrar empresa
         </button>
       </Tab>
       
@@ -202,7 +202,7 @@ const salir = () => {
     <TabPanels>
       <TabPanel>
         <div class="w-4/6 mx-auto mt-10">
-          <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Lista de usuarios</span>
+          <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Empresas registradas</span>
           <div class="mt-3">
             <EasyDataTable
             buttons-pagination
@@ -232,25 +232,25 @@ const salir = () => {
         </TabPanel>
       <TabPanel>
         <form @submit.prevent="enviar" class="w-4/6 mx-auto mt-10">
-  <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Registrar usuario</span>
+  <span class="text-center text-xl mt-12 font-semibold  text-slate-800">Registrar empresa</span>
   <div class="flex flex-col mt-7">
     <span>Nombre(s):</span>
     <input type="text" maxlength="100" required v-model="nombre" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
 
   <div class="flex flex-col mt-7">
-    <span>Apellidos:</span>
-    <input type="text" maxlength="100" required v-model="apellidos" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
+    <span>RFC:</span>
+    <input type="text" maxlength="13" minlength="13" required v-model="apellidos" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
 
   <div class="flex flex-col mt-7">
-    <span>Correo electrónico:</span>
-    <input type="email" maxlength="100" required v-model="email" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
+    <span>Inmex:</span>
+    <input type="text" maxlength="100" required v-model="email" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
 
   <div class="flex flex-col mt-7">
-    <span>Contraseña:</span>
-    <input type="text" minlength="6" maxlength="12" required v-model="password" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
+    <span>Dirección:</span>
+    <input type="text" maxlength="1000" required v-model="password" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
   <div class="flex justify-center">
   <input type="submit" class="mt-10 text-white mb-10 w-[175px] h-11 rounded-md hover:bg-teal-600 p-2 bg-teal-500" value="Guardar"/>
@@ -402,7 +402,7 @@ const salir = () => {
               </DialogTitle>
               <div class="mt-4 flex flex-col">
                 <p class="text-md font-semibold">
-                Esta por eliminar al usuario con id: {{ actid }}
+                Esta por eliminar a la empresa con id: {{ actid }}
                 </p>
                 <span class="mt-6">¿Desea continuar?</span> 
               </div>
