@@ -101,7 +101,7 @@ const salir = () => {
     <input v-model="descripcion" class="border w-4/6 border-slate-700 rounded-sm p-1" maxlength="250" type="text" required />
   </div>
   <div class="flex flex-row">
-    <label class="my-auto font-semibold  w-1/6">Inventario Inicial: </label>
+    <label class="my-auto font-semibold  w-1/6">Descargo: </label>
     <div class="flex flex-col">
       <!-- <input class="mt-6" id="nfile" type="file" ref="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />-->
       <input class="mt-6" id="nfile" type="file" ref="file" multiple />
@@ -111,9 +111,9 @@ const salir = () => {
   </div>
 
   <div class="flex flex-row">
-    <label class="my-auto font-semibold  w-1/6">Descargo: </label>
+    <label class="my-auto font-semibold  w-1/6">Inventario Inicial: </label>
     <div class="flex flex-col">
-      <input class="mt-5" id="nfile1" type="file" ref="file" accept="text/plain" />
+      <input class="mt-5" id="nfile1" type="file" ref="file" accept="text/plain" multiple/>
       <span class="text-sm mt-3">* Solo se aceptan archivos TXT</span>
     </div>
     
