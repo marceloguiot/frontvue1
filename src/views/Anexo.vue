@@ -40,6 +40,11 @@ const enviar = () =>{
         formData.append('total_B', document.getElementById('nfile1').files.length);
 
         formData.append('fileb', document.getElementById('nfile1').files[0]);
+        for(let i = 0; i < document.getElementById('nfile1').files.length; i++){
+          formData.append('fileb'+i, document.getElementById('nfile1').files[i]);
+        }
+       
+       
         formData.append('desc',descripcion.value);
         formData.append('id',id);
         console.log(document.getElementById('nfile').files[0]);
