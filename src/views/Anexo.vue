@@ -143,7 +143,9 @@ const salir = () => {
       <div class="flex flex-col">
  <span v-for="item in descargo.descargo">{{ item }}</span>
 </div>
- <span class="ml-5">{{ descargo.inventario }}</span>
+<div class="flex flex-col">
+  <span v-for="item in descargo.inventario">{{ item }}</span>
+</div>
 </div>
   </template>
 
