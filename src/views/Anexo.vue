@@ -39,7 +39,7 @@ const enviar = () =>{
         formData.append('total_A', document.getElementById('nfile').files.length);
         formData.append('total_B', document.getElementById('nfile1').files.length);
 
-        formData.append('fileb', document.getElementById('nfile1').files[0]);
+       
         for(let i = 0; i < document.getElementById('nfile1').files.length; i++){
           formData.append('fileb'+i, document.getElementById('nfile1').files[i]);
         }
