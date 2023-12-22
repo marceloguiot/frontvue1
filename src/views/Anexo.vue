@@ -14,7 +14,7 @@ const items = ref([]);
 const descripcion = ref('')
 
 onBeforeMount(async function (){
-  await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
+  await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
 
@@ -27,6 +27,7 @@ const headers = [
   { text: "Fecha", value: "fecha"},
   { text: "Descarga", value: "descargo"},
   { text: "Estatus", value: "inventario"},
+  { text: "Opciones", value: "opcion"},
 ];
 
 const enviar = () =>{
@@ -49,10 +50,10 @@ const enviar = () =>{
         formData.append('id',id);
         console.log(document.getElementById('nfile').files[0]);
         const headers = { 'Content-Type': 'multipart/form-data' };
-        axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/anexo/', formData, { headers }).then(async (res) => {
+        axios.post('http://localhost:8000/orders/anexo/', formData, { headers }).then(async (res) => {
           res.data.files; // binary representation of the file
           res.status; // HTTP status
-          await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
+          await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
           cargando.value = false;
@@ -65,6 +66,20 @@ const mover = (ruta) =>{
 
 const salir = () => {
   router.push('/');
+}
+
+const eliminar = (id) => {
+  cargando.value = true;
+  const formData = new FormData();
+  formData.append('id',id);
+  axios.post('http://localhost:8000/orders/eliminar/', formData, { headers }).then(async (res) => {
+
+          await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
+    items.value = data;
+  });
+          cargando.value = false;
+        });
+
 }
 
 </script>
@@ -118,8 +133,8 @@ const salir = () => {
   <div class="flex flex-row">
     <label class="my-auto font-semibold  w-1/6">Inventario Inicial: </label>
     <div class="flex flex-col">
-      <input class="mt-5" id="nfile1" type="file" ref="file" accept="text/plain" multiple/>
-      <span class="text-sm mt-3">* Solo se aceptan archivos TXT</span>
+      <input class="mt-5" id="nfile1" type="file" ref="file" multiple/>
+      <span class="text-sm mt-3">* Puede seleccionar varios archivos</span>
     </div>
     
   </div>
@@ -146,12 +161,16 @@ const salir = () => {
   <template #item-descargo="descargo, inventario">
     <div class="flex flex-row justify-between">
       <div class="flex flex-col">
- <span v-for="item in descargo.descargo">{{ item }}</span>
+ <span v-for="item in descargo.descargo">{{ item.nombre }}</span>
 </div>
 <div class="flex flex-col">
-  <span v-for="item in descargo.inventario">{{ item }}</span>
+  <span v-for="item in descargo.inventario">{{ item.nombre }}</span>
 </div>
 </div>
+  </template>
+
+  <template #item-opcion="_id" class="flex items-center">
+    <span @click="eliminar(_id._id)" class="hover:cursor-pointer hover:text-sky-600">Eliminar</span>
   </template>
 
   <template #item-inventario="descargo">
