@@ -83,8 +83,7 @@ const enviar = () =>{
           axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/',{
       empresa: empresa
     }
-    )
-    .then(function (response){
+    ).then(function (response){
       items.value = response.data;
     })
           cargando.value = false;
