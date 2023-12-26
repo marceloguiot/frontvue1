@@ -17,8 +17,8 @@ const rfc = ref('');
 const inmex = ref('');
 const direccion = ref('');
 const router = useRouter();
-const usuarios = ref([]);
-const usuarios_filtrar = ref([]);
+const empresas = ref([]);
+const empresas_filtrar = ref([]);
 const enabled = ref(true)
 
 
@@ -31,14 +31,15 @@ const isOpen = ref(false);
 const isOpen1 = ref(false);
 
 const editar = (id) =>{
-  usuarios_filtrar.value = usuarios.value;
-  const nfiltro = usuarios_filtrar.value.filter((elemento) => {
+  empresas_filtrar.value = empresas.value;
+  const nfiltro = empresas_filtrar.value.filter((elemento) => {
     return elemento._id == id;
   })
   actid.value = id;
   actnombre.value = nfiltro[0].nombre;
-  actrfc.value = nfiltro[0].apellidos;
-  actinmex.value = nfiltro[0].email;
+  actrfc.value = nfiltro[0].rfc;
+  actinmex.value = nfiltro[0].inmex;
+  actdireccion.value = nfiltro[0].direccion;
   isOpen.value = true;
   enabled.value = nfiltro[0].activo;
 } 
@@ -46,17 +47,28 @@ const editar = (id) =>{
 const headers = [
   { text: "ID", value: "_id", width: 50 },
   { text: "Nombre", value: "nombre"},
-  { text: "RFC", value: "apellidos"},
-  { text: "Inmex", value: "email"},
-  { text: "Dirección", value: "activo"},
+  { text: "RFC", value: "rfc"},
+  { text: "Inmex", value: "inmex"},
+  { text: "Dirección", value: "direccion"},
+  { text: "Activo", value: "activo"},
   { text: "Opciones", value: "opciones"},
 ];
 
 
 onBeforeMount(async function (){
-  await fetch(`http://localhost:8000/list/`).then((r) => (r.json())).then((data) =>{
-    usuarios.value = data;
+
+  const log = sessionStorage.getItem('id');
+    if(log == '' || log == null)
+    {
+      router.push('/');
+    }
+    else{
+      await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/`).then((r) => (r.json())).then((data) =>{
+    empresas.value = data;
   });
+    }
+
+  
 
 
 })
@@ -68,7 +80,7 @@ const enviar = () =>{
   }
   else
   {
-    axios.post('http://localhost:8000/users/',{
+    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/guardar/',{
       inmex: inmex.value,
       direccion: direccion.value,
       nombre: nombre.value,
@@ -82,19 +94,19 @@ const enviar = () =>{
       }
       else
       {
-        router.push('/dashboard');
+        location.reload();
       }
     })
   }
 }
 
 const actualizar = () =>{
-  axios.post('http://localhost:8000/actualizar/',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/actualizar/',{
       id: actid.value,
       nombre: actnombre.value,
-      apellidos: actrfc.value,
-      email: actinmex.value,
-      contrasena: actdireccion.value,
+      rfc: actrfc.value,
+      inmex: actinmex.value,
+      direccion: actdireccion.value,
       activo: enabled.value
     }
     )
@@ -113,7 +125,7 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  axios.post('http://localhost:8000/eliminar/',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/eliminar/',{
       id: id
     }
     )
@@ -144,6 +156,8 @@ const mover = (lugar) =>{
   router.push('/'+lugar)
 }
 const salir = () => {
+  sessionStorage.removeItem('id');
+  sessionStorage.removeItem('idem');
   router.push('/');
 }
 </script>
@@ -209,7 +223,7 @@ const salir = () => {
             table-class-name="configurar_ev"
             :rows-per-page="10"
     :headers="headers"
-    :items="usuarios"
+    :items="empresas"
     border-cell
     alternating
             rowsPerPageMessage="Registros por página"
@@ -240,17 +254,17 @@ const salir = () => {
 
   <div class="flex flex-col mt-7">
     <span>RFC:</span>
-    <input type="text" maxlength="13" minlength="13" required v-model="apellidos" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
+    <input type="text" maxlength="13" minlength="13" required v-model="rfc" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
 
   <div class="flex flex-col mt-7">
     <span>Inmex:</span>
-    <input type="text" maxlength="100" required v-model="email" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
+    <input type="text" maxlength="100" required v-model="inmex" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
 
   <div class="flex flex-col mt-7">
     <span>Dirección:</span>
-    <input type="text" maxlength="1000" required v-model="password" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
+    <input type="text" maxlength="1000" required v-model="direccion" class="border border-teal-500 rounded-sm mt-2 h-12 shadow-sm p-2">
   </div>
   <div class="flex justify-center">
   <input type="submit" class="mt-10 text-white mb-10 w-[175px] h-11 rounded-md hover:bg-teal-600 p-2 bg-teal-500" value="Guardar"/>
@@ -309,18 +323,18 @@ const salir = () => {
                 </div>
 
                 <div class="mt-5 flex flex-col">
-                  <span>Apellidos:</span>
-                  <input type="text" maxlength="100" v-model="actapellidos" required class="border border-slate-500 p-2 w-full">
+                  <span>RFC:</span>
+                  <input type="text" maxlength="13" minlength="13" v-model="actrfc" required class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
-                  <span>Email:</span>
-                  <input type="text" maxlength="100" v-model="actemail" required class="border border-slate-500 p-2 w-full">
+                  <span>Inmex:</span>
+                  <input type="text" maxlength="100" v-model="actinmex" required class="border border-slate-500 p-2 w-full">
                 </div>
 
                 <div class="mt-5 flex flex-col">
-                  <span>Nueva contraseña:</span>
-                  <input type="text" minlength="6" maxlength="12" v-model="actpass" class="border border-slate-500 p-2 w-full">
+                  <span>Dirección:</span>
+                  <input type="text" maxlength="255" required v-model="actdireccion" class="border border-slate-500 p-2 w-full">
                 </div>
   <div class="py-5 flex flex-col">
     <span class="mb-3">Activo:</span>

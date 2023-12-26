@@ -11,6 +11,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/vue'
+import Empresa from '../components/Empresa.vue'
 
 const nombre = ref('');
 const apellidos = ref('');
@@ -29,6 +30,8 @@ const actemail = ref('');
 const actpass = ref('');
 const isOpen = ref(false);
 const isOpen1 = ref(false);
+
+const sempresa = ref(false);
 
 const editar = (id) =>{
   usuarios_filtrar.value = usuarios.value;
@@ -53,11 +56,30 @@ const headers = [
 ];
 
 
+
+
 onBeforeMount(async function (){
-  await fetch(`http://localhost:8000/list/`).then((r) => (r.json())).then((data) =>{
+
+  const log = sessionStorage.getItem('id');
+    if(log == '' || log == null)
+    {
+      router.push('/');
+    }
+    else{
+    const logemp = sessionStorage.getItem('idem');
+    if(logemp == '' || logemp == null)
+    {
+      sempresa.value = true;
+    }
+
+      await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => (r.json())).then((data) =>{
     usuarios.value = data;
   });
 
+  
+
+    }
+ 
 
 })
 
@@ -68,7 +90,7 @@ const enviar = () =>{
   }
   else
   {
-    axios.post('http://localhost:8000/users/',{
+    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/users/',{
       email: email.value,
       contrasena: password.value,
       nombre: nombre.value,
@@ -89,7 +111,7 @@ const enviar = () =>{
 }
 
 const actualizar = () =>{
-  axios.post('http://localhost:8000/actualizar/',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/actualizar/',{
       id: actid.value,
       nombre: actnombre.value,
       apellidos: actapellidos.value,
@@ -113,7 +135,7 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  axios.post('http://localhost:8000/eliminar/',{
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/eliminar/',{
       id: id
     }
     )
@@ -144,10 +166,13 @@ const mover = (lugar) =>{
   router.push('/'+lugar)
 }
 const salir = () => {
+  sessionStorage.removeItem('id');
+  sessionStorage.removeItem('idem');
   router.push('/');
 }
 </script>
 <template>
+  <Empresa :active="sempresa" />
   <div class="flex flex-col">
     <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
   <div class="flex items-center flex-shrink-0 text-white mr-6">
@@ -338,7 +363,7 @@ const salir = () => {
     </Switch>
   </div>
 
-
+  
                
                 </p>
               </div>
@@ -429,7 +454,7 @@ const salir = () => {
       </div>
     </Dialog>
   </TransitionRoot>
-
+  
 </template>
 <style>
 .configurar_ev {

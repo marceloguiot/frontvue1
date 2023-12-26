@@ -3,20 +3,45 @@ import { useRouter } from 'vue-router';
 import { ref, onBeforeMount } from 'vue';
 import axios from 'axios';
 import Loader from '../components/Loader.vue';
+import Empresa from '../components/Empresa.vue'
 
 
 const router = useRouter();
 
 const cargando = ref(false);
+const sempresa = ref(false);
 
 const items = ref([]);
 
 const descripcion = ref('')
 
 onBeforeMount(async function (){
-  await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
-    items.value = data;
-  });
+
+  const log = sessionStorage.getItem('id');
+    if(log == '' || log == null)
+    {
+      router.push('/');
+    }
+    else{
+      const logemp = sessionStorage.getItem('idem');
+    if(logemp == '' || logemp == null)
+    {
+      sempresa.value = true;
+    }
+    else
+    {
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/',{
+      empresa: logemp
+    }
+    )
+    .then(function (response){
+      items.value = response.data;
+    })
+
+    }
+    
+    }
+  
 
 
 })
@@ -34,11 +59,13 @@ const enviar = () =>{
   cargando.value = true;
   const formData = new FormData();
   const id = sessionStorage.getItem("id");
+  const empresa = sessionStorage.getItem("idem");
         for(let i = 0; i < document.getElementById('nfile').files.length; i++){
           formData.append('file'+i, document.getElementById('nfile').files[i]);
         }
         formData.append('total_A', document.getElementById('nfile').files.length);
         formData.append('total_B', document.getElementById('nfile1').files.length);
+        formData.append('empresa', empresa);
 
        
         for(let i = 0; i < document.getElementById('nfile1').files.length; i++){
@@ -50,12 +77,16 @@ const enviar = () =>{
         formData.append('id',id);
         console.log(document.getElementById('nfile').files[0]);
         const headers = { 'Content-Type': 'multipart/form-data' };
-        axios.post('http://localhost:8000/orders/anexo/', formData, { headers }).then(async (res) => {
+        axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/anexo/', formData, { headers }).then(async (res) => {
           res.data.files; // binary representation of the file
           res.status; // HTTP status
-          await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
-    items.value = data;
-  });
+          axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/',{
+      empresa: empresa
+    }
+    )
+    .then(function (response){
+      items.value = response.data;
+    })
           cargando.value = false;
         });
 }
@@ -65,18 +96,25 @@ const mover = (ruta) =>{
 }
 
 const salir = () => {
+  sessionStorage.removeItem('id');
+  sessionStorage.removeItem('idem');
   router.push('/');
 }
 
 const eliminar = (id) => {
   cargando.value = true;
   const formData = new FormData();
+  const logemp = sessionStorage.getItem('idem');
   formData.append('id',id);
-  axios.post('http://localhost:8000/orders/eliminar/', formData, { headers }).then(async (res) => {
+  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/eliminar/', formData, { headers }).then(async (res) => {
 
-          await fetch(`http://localhost:8000/orders/getanexo/`).then((r) => (r.json())).then((data) =>{
-    items.value = data;
-  });
+    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/',{
+      empresa: logemp
+    }
+    )
+    .then(function (response){
+      items.value = response.data;
+    })
           cargando.value = false;
         });
 
@@ -184,4 +222,5 @@ const eliminar = (id) => {
   </EasyDataTable>
   </div>
   </div>
+  <Empresa :active="sempresa" />
 </template>
