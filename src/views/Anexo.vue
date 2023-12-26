@@ -33,8 +33,7 @@ onBeforeMount(async function (){
   axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/',{
       empresa: logemp
     }
-    )
-    .then(function (response){
+    ).then(function (response){
       items.value = response.data;
     })
 
@@ -110,8 +109,7 @@ const eliminar = (id) => {
     axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/',{
       empresa: logemp
     }
-    )
-    .then(function (response){
+    ).then(function (response){
       items.value = response.data;
     })
           cargando.value = false;
