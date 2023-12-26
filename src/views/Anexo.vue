@@ -76,12 +76,10 @@ const enviar = () =>{
         axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/anexo/', formData, { headers }).then(async (res) => {
           res.data.files; // binary representation of the file
           res.status; // HTTP status
-          const formData1 = new FormData();
-          formData1.append('empresa', empresa)
-          axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/', formData1
-    ).then(function (response){
-      items.value = response.data;
-    })
+          await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo`).then((r) => (r.json())).then((data) =>{
+    items.value = data;
+  });
+
           cargando.value = false;
         });
 }
@@ -102,12 +100,10 @@ const eliminar = (id) => {
   const logemp = sessionStorage.getItem('idem');
   formData.append('id',id);
   axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/eliminar/', formData, { headers }).then(async (res) => {
-    const formData1 = new FormData();
-          formData1.append('empresa', logemp)
-    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo/', formData1
-    ).then(function (response){
-      items.value = response.data;
-    })
+    await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo`).then((r) => (r.json())).then((data) =>{
+    items.value = data;
+  });
+
           cargando.value = false;
         });
 
