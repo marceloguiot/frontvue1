@@ -31,7 +31,7 @@ else
         formData.append('empresa',empresa);
 
         const headers = { 'Content-Type': 'multipart/form-data' };
-        axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/datastage/guardar/', formData, { headers }).then(async (res) => {
+        axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/guardar/', formData, { headers }).then(async (res) => {
           res.data.files; // binary representation of the file
           res.status; // HTTP status
           await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/datastage/`).then((r) => (r.json())).then((data) =>{
