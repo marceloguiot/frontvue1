@@ -64,7 +64,7 @@ onBeforeMount(async function (){
       router.push('/');
     }
     else{
-      await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/`).then((r) => (r.json())).then((data) =>{
+      await fetch(`http://localhost:8000/empresas/`).then((r) => (r.json())).then((data) =>{
     empresas.value = data;
   });
     }
@@ -81,7 +81,7 @@ const enviar = () =>{
   }
   else
   {
-    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/guardar/',{
+    axios.post('http://localhost:8000/empresas/guardar/',{
       inmex: inmex.value,
       direccion: direccion.value,
       nombre: nombre.value,
@@ -102,7 +102,7 @@ const enviar = () =>{
 }
 
 const actualizar = () =>{
-  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/actualizar/',{
+  axios.post('http://localhost:8000/empresas/actualizar/',{
       id: actid.value,
       nombre: actnombre.value,
       rfc: actrfc.value,
@@ -126,7 +126,7 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/empresas/eliminar/',{
+  axios.post('http://localhost:8000/empresas/eliminar/',{
       id: id
     }
     )

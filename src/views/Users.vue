@@ -73,7 +73,7 @@ onBeforeMount(async function (){
       sempresa.value = true;
     }
 
-      await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/list/`).then((r) => (r.json())).then((data) =>{
+      await fetch(`http://localhost:8000/list/`).then((r) => (r.json())).then((data) =>{
     usuarios.value = data;
   });
 
@@ -91,7 +91,7 @@ const enviar = () =>{
   }
   else
   {
-    axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/users/',{
+    axios.post('http://localhost:8000/users/',{
       email: email.value,
       contrasena: password.value,
       nombre: nombre.value,
@@ -112,7 +112,7 @@ const enviar = () =>{
 }
 
 const actualizar = () =>{
-  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/actualizar/',{
+  axios.post('http://localhost:8000/actualizar/',{
       id: actid.value,
       nombre: actnombre.value,
       apellidos: actapellidos.value,
@@ -136,7 +136,7 @@ actid.value = id;
 }
 
 const eliminar_def = (id) =>{
-  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/eliminar/',{
+  axios.post('http://localhost:8000/eliminar/',{
       id: id
     }
     )

@@ -31,7 +31,7 @@ onBeforeMount(async function (){
     }
     else
     {
-      await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo`).then((r) => (r.json())).then((data) =>{
+      await fetch(`http://localhost:8000/orders/getanexo`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
 
@@ -74,10 +74,10 @@ const enviar = () =>{
         formData.append('id',id);
         console.log(document.getElementById('nfile').files[0]);
         const headers = { 'Content-Type': 'multipart/form-data' };
-        axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/anexo/', formData, { headers }).then(async (res) => {
+        axios.post('http://localhost:8000/orders/anexo/', formData, { headers }).then(async (res) => {
           res.data.files; // binary representation of the file
           res.status; // HTTP status
-          await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo`).then((r) => (r.json())).then((data) =>{
+          await fetch(`http://localhost:8000/orders/getanexo`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
 
@@ -96,8 +96,8 @@ const eliminar = (id) => {
   const formData = new FormData();
   const logemp = sessionStorage.getItem('idem');
   formData.append('id',id);
-  axios.post('https://auditanexo30-c50565cdd95d.herokuapp.com/orders/eliminar/', formData, { headers }).then(async (res) => {
-    await fetch(`https://auditanexo30-c50565cdd95d.herokuapp.com/orders/getanexo`).then((r) => (r.json())).then((data) =>{
+  axios.post('http://localhost:8000/orders/eliminar/', formData, { headers }).then(async (res) => {
+    await fetch(`http://localhost:8000/orders/getanexo`).then((r) => (r.json())).then((data) =>{
     items.value = data;
   });
 
