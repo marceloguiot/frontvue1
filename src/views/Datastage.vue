@@ -3,9 +3,7 @@ import Menu from '../components/Menu.vue'
 import { ref } from 'vue';
 import axios from 'axios';
 
-const folio = ref('');
-const fechai = ref('');
-const fechaf = ref('');
+
 const cargando = ref(false);
 
 const enviar = () => {
@@ -13,20 +11,13 @@ const enviar = () => {
     
     const id = sessionStorage.getItem("id");
     const empresa = sessionStorage.getItem("idem");
-if(fechai.value > fechaf.value)
-{
-    alert('La fecha inicial no puede ser posterior a la final, favor de verificar.')
-}
-else
-{
+
+
     const formData = new FormData();
     for(let i = 0; i < document.getElementById('nfile').files.length; i++){
           formData.append('file'+i, document.getElementById('nfile').files[i]);
         }
         formData.append('total_zips', document.getElementById('nfile').files.length);
-        formData.append('folio', folio.value);
-        formData.append('fechai', fechai.value);
-        formData.append('fechaf', fechaf.value);
         formData.append('id',id);
         formData.append('empresa',empresa);
 
@@ -40,7 +31,7 @@ else
 
           cargando.value = false;
         });
-}
+
 }
 
 
@@ -52,20 +43,11 @@ else
     <div class="flex flex-col w-5/6 mx-auto">
         <span class="text-xl font-semibold mt-20">Subir Datastage</span>
   <form @submit.prevent="enviar" class="flex flex-col w-4/6">
-  <div class="flex flex-row mt-7">
-    <label class="my-auto font-semibold w-1/6">Folio: </label>
-    <input v-model="folio" class="border w-4/6 border-slate-700 rounded-sm p-1" maxlength="25" type="text" required />
-  </div>
-  <div class="flex flex-row mt-7">
-    <label class="my-auto font-semibold w-1/6">Fecha inicial: </label>
-    <input v-model="fechai" class="border w-4/6 border-slate-700 rounded-sm p-1" type="date" required />
-  </div>
-  <div class="flex flex-row mt-7">
-    <label class="my-auto font-semibold w-1/6">Fecha final: </label>
-    <input v-model="fechaf" class="border w-4/6 border-slate-700 rounded-sm p-1" type="date" required />
-  </div>
+
+ 
+  
   <div class="flex flex-row">
-    <label class="my-auto font-semibold  w-1/6">Archivos: </label>
+    <label class="my-auto font-semibold  w-1/6">Archivo (s): </label>
     <div class="flex flex-col">
         <input class="mt-6" id="nfile" type="file" required ref="file" multiple accept=".zip" />
         <span class="text-sm mt-3">* Puede seleccionar varios archivos en formato .zip</span>
